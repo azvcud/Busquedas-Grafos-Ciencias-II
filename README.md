@@ -23,7 +23,7 @@ Este repositorio contiene el código fuente del segundo reto en la asignatura de
 
 2. **Algoritmo de Kruskal**
 
-3. **Algoritmo A'*'**
+3. **Algoritmo A***
 
 
 ---
