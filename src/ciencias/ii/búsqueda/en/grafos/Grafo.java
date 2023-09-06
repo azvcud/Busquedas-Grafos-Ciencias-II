@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 
 public class Grafo {
 
@@ -39,6 +40,131 @@ public class Grafo {
 			return true;
 		} else
 			return false;
+	}
+
+	public ArrayList<Nodo> nodosCercanos(Nodo nodo) {
+		ArrayList<Nodo> nodosAdyacentes = new ArrayList<Nodo>();
+		for (Arista arista : aristas) {
+			if (arista.nodoi.equals(nodo)) {
+				nodosAdyacentes.add(arista.nodoi);
+				System.out.println("el nodo: " + arista.nodof.nombre + " es adyacente");
+			}
+			if (arista.nodof.equals(nodo)) {
+				nodosAdyacentes.add(arista.nodof);
+				System.out.println("el nodo: " + arista.nodoi.nombre + " es adyacente");
+			}
+		}
+		return nodosAdyacentes;
+	}
+
+	public ArrayList<Arista> aristasInvolucradas(Nodo nodo) {
+		ArrayList<Arista> aristasInvolucradas = new ArrayList<Arista>();
+		for (Arista arista : aristas) {
+			if (arista.nodoi.equals(nodo)) {
+				aristasInvolucradas.add(arista);
+			}
+			if (arista.nodof.equals(nodo)) {
+				aristasInvolucradas.add(arista);
+			}
+		}
+		return aristasInvolucradas;
+	}
+
+	public void calcularRuta(Nodo nodoInicial, Nodo nodoDestino) {
+		Nodo nodoActual = nodoInicial;
+		Nodo siguienteNodo = null;
+		Nodo nodoAnterior = null;
+		int valorAcumulado = 0;
+
+		while (!nodoActual.equals(nodoDestino)) {
+			Arista mejorArista = new Arista(null, null, 100000000);
+			ArrayList<Arista> aristasInvolucradas = aristasInvolucradas(nodoActual);
+			Iterator<Arista> iterator = aristasInvolucradas.iterator();
+
+			while (iterator.hasNext()) {
+				Arista arista = iterator.next();
+				if (arista.nodof.equals(nodoAnterior) || arista.nodoi.equals(nodoAnterior)) {
+					iterator.remove();
+				} else {
+					System.out.println(arista);
+					System.out.print(" //Calculo " + arista.distancia + " + " + nodoActual.distanciaManhattan + " + "
+							+ valorAcumulado);
+					System.out.println("");
+
+					/*
+					 * Aca hay un inconveniente con la suma de la distancia manhatan, Se esta
+					 * considerando todas desde el nodo actua, es decir desde la posicion
+					 * inicial desde donde se miraran las opciones y no la distancia manhatan de las
+					 * opciones en si, Es posible que se requiera de un par de nodos
+					 * auxiliares para comparar cada par de opciones, considerando que en la primera
+					 * iteración mejorArista es nula en sus nodos y luego se sobreescribe
+					 * como la primera opción
+					 */
+					if ((arista.distancia + nodoActual.distanciaManhattan + valorAcumulado) <= (mejorArista.distancia
+							+ nodoActual.distanciaManhattan + valorAcumulado)) {
+						mejorArista = arista;
+					}
+				}
+			}
+
+			System.out.println("mejor arista: " + mejorArista.toString());
+			valorAcumulado += mejorArista.distancia;
+			System.out.println("Valor acumulado: " + valorAcumulado);
+			if (mejorArista.nodof.equals(nodoActual)) {
+				siguienteNodo = mejorArista.nodoi;
+			} else {
+				siguienteNodo = mejorArista.nodof;
+			}
+			System.out.println("---------------------------");
+			nodoAnterior = nodoActual;
+			nodoActual = siguienteNodo;
+			System.out.println("nodo anterior: " + nodoAnterior.toString());
+			System.out.println("nodo actual: " + nodoActual.toString());
+		}
+
+		//
+		/*
+		 * Nodo nodoAnterior = nodoInicial;
+		 * Nodo nodoActual = nodoInicial;
+		 * Nodo siguienteNodo = nodoActual;
+		 * int valorAcumulado = 0;
+		 * Arista mejorArista = null;
+		 * Nodo borrable = null;
+		 * ArrayList<Arista> aristasInvolucradas = new ArrayList<Arista>();
+		 * ArrayList<Nodo> nodosCandidatos = new ArrayList<Nodo>();
+		 * while (!nodoActual.equals(nodoDestino)) {
+		 * aristasInvolucradas = aristasInvolucradas(nodoActual);
+		 * List<Arista> copyList = new ArrayList<>(aristasInvolucradas);
+		 * mejorArista = aristasInvolucradas.get(0);
+		 * nodosCandidatos = nodosCercanos(nodoActual);
+		 * for (Nodo nodo : nodosCandidatos) {
+		 * if (nodo.equals(nodoAnterior)) {
+		 * borrable = nodo;
+		 * }
+		 * }
+		 * nodosCandidatos.remove(borrable);
+		 * for (Arista arista : copyList) {
+		 * if (nodoAnterior.equals(arista.nodoi) || nodoAnterior.equals(arista.nodof)) {
+		 * aristasInvolucradas.remove(arista);
+		 * } else {
+		 * Nodo aux;
+		 * if (arista.nodoi.equals(nodoActual)) {
+		 * aux = arista.nodof;
+		 * } else {
+		 * aux = arista.nodoi;
+		 * }
+		 * if ((arista.distancia + valorAcumulado + aux.distanciaManhattan) <=
+		 * mejorArista.distancia
+		 * + valorAcumulado + siguienteNodo.distanciaManhattan) {
+		 * siguienteNodo = aux;
+		 * }
+		 * }
+		 * }
+		 * valorAcumulado += mejorArista.distancia;
+		 * nodoActual = siguienteNodo;
+		 * System.out.println("nodo actual: " + nodoActual.toString());
+		 * }
+		 */
 	}
 
 	public int getMaximoNodoX() {

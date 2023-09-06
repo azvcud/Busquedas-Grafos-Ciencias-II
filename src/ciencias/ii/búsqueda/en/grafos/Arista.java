@@ -4,12 +4,14 @@ public class Arista {
 
 	protected Nodo nodoi;
 	protected Nodo nodof;
+	protected int distancia;
 	protected int id;
 	static int Cont = 0;
 
-	public Arista(Nodo nodoi, Nodo nodof) {
+	public Arista(Nodo nodoi, Nodo nodof, int distancia) {
 		this.nodoi = nodoi;
 		this.nodof = nodof;
+		this.distancia = distancia;
 		this.id = ++Arista.Cont;
 	}
 
@@ -25,20 +27,13 @@ public class Arista {
 		return nodoi;
 	}
 
-	public double distancia() {
-		double dx = nodoi.x - nodof.x;
-		double dy = nodoi.y - nodof.y;
-		return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
-	}
-
-	public double distanciaManhathan() {
-		int dx = Math.abs(nodoi.x - nodof.x);
-		int dy = Math.abs(nodoi.y - nodof.y);
-		return dx + dy;
+	public int getDistancia() {
+		return distancia;
 	}
 
 	@Override
 	public String toString() {
-		return "Arista:" + this.id + "[" + this.nodoi.toString() + "-" + this.nodof.toString() + "]";
+		return "Arista: " + this.id + " " + distancia + " [" + this.nodoi.toString() + "-" + this.nodof.toString()
+				+ "]";
 	}
 }

@@ -4,11 +4,15 @@ public class Nodo {
 	protected int x;
 	protected int y;
 	protected int id;
+	protected String nombre;
+	protected int distanciaManhattan;
 	static int Cont = 0;
 
-	public Nodo(int x, int y) {
+	public Nodo(int x, int y, String nombre, int distanciaManhattan) {
 		this.x = x;
 		this.y = y;
+		this.nombre = nombre;
+		this.distanciaManhattan = distanciaManhattan;
 		this.id = ++Nodo.Cont;
 	}
 
@@ -36,9 +40,18 @@ public class Nodo {
 		return id;
 	}
 
+	public String getNombre() {
+		return nombre;
+	}
+
+	public int getDistanciaManhattan() {
+		return distanciaManhattan;
+	}
+
 	@Override
 	public String toString() {
-		return "Nodo:" + this.id + "(" + this.x + "," + this.y + ")";
+		return "Nodo:" + this.id + "(" + this.x + "," + this.y + ")" + ", " + this.nombre + ", "
+				+ this.distanciaManhattan;
 	}
 
 	/*
