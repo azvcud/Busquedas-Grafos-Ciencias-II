@@ -110,15 +110,8 @@ public class TestGrafos {
 		grafo.agregarArista(arista27);
 		grafo.agregarArista(arista28);
 
-		grafo.calcularRuta(nodo9, nodo0);
+		grafo.calcularRuta(nodo16, nodo0);
 
-		/*
-		 * Arista arista = new Arista(nodos.get(1), nodos.get(2));
-		 * grafo.agregarArista(arista);
-		 * arista = new Arista(nodos.get(1), nodos.get(3));
-		 * grafo.agregarArista(arista);
-		 * System.out.println(grafo.toString());
-		 */
 	}
 
 }
