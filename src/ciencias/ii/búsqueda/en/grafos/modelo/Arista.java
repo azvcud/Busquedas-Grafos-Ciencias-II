@@ -1,4 +1,4 @@
-package ciencias.ii.búsqueda.en.grafos;
+package ciencias.ii.búsqueda.en.grafos.modelo;
 
 public class Arista {
 
