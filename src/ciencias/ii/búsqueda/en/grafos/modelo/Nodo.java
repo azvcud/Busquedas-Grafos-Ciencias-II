@@ -1,4 +1,4 @@
-package ciencias.ii.búsqueda.en.grafos;
+package ciencias.ii.búsqueda.en.grafos.modelo;
 
 public class Nodo {
 	protected int x;
@@ -14,10 +14,6 @@ public class Nodo {
 		this.nombre = nombre;
 		this.distanciaManhattan = distanciaManhattan;
 		this.id = ++Nodo.Cont;
-	}
-
-	public Nodo() {
-		this(0, 0);
 	}
 
 	public int getX() {
