@@ -1,4 +1,4 @@
-package ciencias.ii.búsqueda.en.grafos.modelo;
+package modelo;
 
 public class Nodo {
 	protected int x;
@@ -13,7 +13,7 @@ public class Nodo {
 		this.y = y;
 		this.nombre = nombre;
 		this.distanciaManhattan = distanciaManhattan;
-		this.id = ++Nodo.Cont;
+		this.id = Nodo.Cont++;
 	}
 
 	public int getX() {

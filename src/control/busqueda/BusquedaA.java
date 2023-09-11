@@ -1,16 +1,21 @@
-package ciencias.ii.búsqueda.en.grafos.control;
+package control.busqueda;
 
+import control.busqueda.Busqueda;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import ciencias.ii.búsqueda.en.grafos.modelo.Arista;
-import ciencias.ii.búsqueda.en.grafos.modelo.Grafo;
-import ciencias.ii.búsqueda.en.grafos.modelo.Nodo;
+import modelo.Arista;
+import modelo.Grafo;
+import modelo.Nodo;
+import vista.interfaz.Consola;
 
 public class BusquedaA implements Busqueda {
 
+    long tiempoLimite;
+    private Consola consola = new Consola();
+    
     public ArrayList<Arista> aristasInvolucradas(Grafo g, Nodo nodo) {
-        ArrayList<Arista> aristasInvolucradas = new ArrayList<Arista>();
+        ArrayList<Arista> aristasInvolucradas = new ArrayList<>();
         for (Arista arista : g.getAristas()) {
             if (arista.getNodei().equals(nodo)) {
                 aristasInvolucradas.add(arista);
@@ -23,7 +28,11 @@ public class BusquedaA implements Busqueda {
     }
 
     @Override
-    public void obtenerRuta(Grafo g, Nodo nodoInicial, Nodo nodoDestino) {
+    public ArrayList<Arista> obtenerRuta(Grafo g, Nodo nodoInicial, Nodo nodoDestino) {
+        consola.setVisible(true);
+        tiempoLimite = System.currentTimeMillis();
+        
+        ArrayList<Arista> caminoSolucion = new ArrayList<>();
         Nodo nodoActual = nodoInicial;
         Nodo siguienteNodo = null;
         Nodo nodoAnterior = null;
@@ -47,23 +56,23 @@ public class BusquedaA implements Busqueda {
                 mejorArista = (mejorArista == null) ? arista : mejorArista;
                 if (arista.getNodef() == nodoActual) {
                     aux = arista.getNodei();
-                    System.out.println("---Nodo Aux: " + aux.toString());
+                    consola.imprimir("---Nodo Aux: " + aux.toString());
                 } else {
                     aux = arista.getNodef();
-                    System.out.println("---Nodo Aux: " + aux.toString());
+                    consola.imprimir("---Nodo Aux: " + aux.toString());
                 }
                 if (mejorArista.getNodef() == nodoActual) {
                     aux2 = mejorArista.getNodei();
-                    System.out.println("---Nodo Aux2: " + aux2.toString());
+                    consola.imprimir("---Nodo Aux2: " + aux2.toString());
                 } else {
                     aux2 = mejorArista.getNodef();
-                    System.out.println("---Nodo Aux2: " + aux2.toString());
+                    consola.imprimir("---Nodo Aux2: " + aux2.toString());
                 }
-                System.out.println(
+                consola.imprimir(
                         " //Calculo arista: " + arista.getDistancia() + " + " + aux.getDistanciaManhattan() + " + "
                                 + valorAcumulado + " = "
                                 + (arista.getDistancia() + aux.getDistanciaManhattan() + valorAcumulado));
-                System.out.println(
+                consola.imprimir(
                         " //Calculo aristaA: " + mejorArista.getDistancia() + " + " + aux2.getDistanciaManhattan()
                                 + " + " + valorAcumulado + " = "
                                 + (mejorArista.getDistancia() + aux2.getDistanciaManhattan() + valorAcumulado));
@@ -71,26 +80,32 @@ public class BusquedaA implements Busqueda {
                         + valorAcumulado) <= (mejorArista.getDistancia()
                                 + aux2.getDistanciaManhattan() + valorAcumulado)) {
                     mejorArista = arista;
-                    System.out.println("Posible mejor: " + mejorArista.toString());
+                    consola.imprimir("Posible mejor: " + mejorArista.toString());
                 } else {
-                    System.out.println("Se mantiene la mejor arista anterior");
+                    consola.imprimir("Se mantiene la mejor arista anterior");
                 }
             }
 
-            System.out.println("mejor arista: " + mejorArista.toString());
+            caminoSolucion.add(mejorArista);
+            consola.imprimir("mejor arista: " + mejorArista.toString());
             valorAcumulado += mejorArista.getDistancia();
-            System.out.println("Valor acumulado: " + valorAcumulado);
+            consola.imprimir("Valor acumulado: " + valorAcumulado);
             if (mejorArista.getNodef().equals(nodoActual)) {
                 siguienteNodo = mejorArista.getNodei();
             } else {
                 siguienteNodo = mejorArista.getNodef();
             }
-            System.out.println("---------------------------");
+            consola.imprimir("---------------------------");
             nodoAnterior = nodoActual;
             nodoActual = siguienteNodo;
-            System.out.println("nodo anterior: " + nodoAnterior.toString());
-            System.out.println("nodo actual: " + nodoActual.toString());
+            consola.imprimir("nodo anterior: " + nodoAnterior.toString());
+            consola.imprimir("nodo actual: " + nodoActual.toString());
+            
+            if(System.currentTimeMillis() - tiempoLimite > 500) {
+                return null;
+            }
         }
+        return caminoSolucion;
     }
 
 }

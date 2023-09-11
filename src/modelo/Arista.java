@@ -1,4 +1,4 @@
-package ciencias.ii.búsqueda.en.grafos.modelo;
+package modelo;
 
 public class Arista {
 
@@ -6,13 +6,13 @@ public class Arista {
 	protected Nodo nodof;
 	protected int distancia;
 	protected int id;
-	static int Cont = 0;
+	private static int Cont = 0;
 
 	public Arista(Nodo nodoi, Nodo nodof, int distancia) {
 		this.nodoi = nodoi;
 		this.nodof = nodof;
 		this.distancia = distancia;
-		this.id = ++Arista.Cont;
+		this.id = Arista.Cont++;
 	}
 
 	public int getId() {

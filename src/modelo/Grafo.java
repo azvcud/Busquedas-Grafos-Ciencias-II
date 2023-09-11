@@ -1,4 +1,4 @@
-package ciencias.ii.búsqueda.en.grafos.modelo;
+package modelo;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
