@@ -1,7 +1,6 @@
 package control;
 
 import control.busqueda.Busqueda;
-import control.busqueda.BusquedaA;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -32,26 +31,26 @@ public class Controlador implements ActionListener {
     }
 
     public void iniciar() throws IOException {
-        Nodo nodo0 = new Nodo(394, 673, "Bogotá", 0);
-        Nodo nodo1 = new Nodo(454, 604, "Tunja", 123);
-        Nodo nodo2 = new Nodo(275, 645, "Manizales", 164);
-        Nodo nodo3 = new Nodo(268, 544, "Medellin", 242);
-        Nodo nodo4 = new Nodo(412, 476, "Barrancabermeja", 264);
-        Nodo nodo5 = new Nodo(474, 472, "Bucaramanga", 292);
-        Nodo nodo6 = new Nodo(527, 407, "Cúcuta", 399);
-        Nodo nodo7 = new Nodo(297, 697, "Ibague", 132);
-        Nodo nodo8 = new Nodo(257, 670, "Pereira", 180);
-        Nodo nodo9 = new Nodo(243, 332, "Montería", 490);
-        Nodo nodo10 = new Nodo(284, 287, "Sincelejo", 532);
-        Nodo nodo11 = new Nodo(276, 191, "Cartagena", 642);
-        Nodo nodo12 = new Nodo(333, 141, "Barranquilla", 696);
-        Nodo nodo13 = new Nodo(382, 120, "Santa Marta", 723);
-        Nodo nodo14 = new Nodo(464, 186, "Valledupar", 643);
-        Nodo nodo15 = new Nodo(409, 230, "Bosconia", 577);
-        Nodo nodo16 = new Nodo(491, 95, "Riohacha", 763);
-        Nodo nodo17 = new Nodo(189, 780, "Cali", 306);
-        Nodo nodo18 = new Nodo(433, 722, "Villavicencio", 78);
-        Nodo nodo19 = new Nodo(292, 825, "Neiva", 241);
+        Nodo nodo0 = new Nodo(394, 673, "Bogotá");
+        Nodo nodo1 = new Nodo(454, 604, "Tunja");
+        Nodo nodo2 = new Nodo(275, 645, "Manizales");
+        Nodo nodo3 = new Nodo(268, 544, "Medellin");
+        Nodo nodo4 = new Nodo(412, 476, "Barrancabermeja");
+        Nodo nodo5 = new Nodo(474, 472, "Bucaramanga");
+        Nodo nodo6 = new Nodo(527, 407, "Cúcuta");
+        Nodo nodo7 = new Nodo(297, 697, "Ibague");
+        Nodo nodo8 = new Nodo(257, 670, "Pereira");
+        Nodo nodo9 = new Nodo(243, 332, "Montería");
+        Nodo nodo10 = new Nodo(284, 287, "Sincelejo");
+        Nodo nodo11 = new Nodo(276, 191, "Cartagena");
+        Nodo nodo12 = new Nodo(333, 141, "Barranquilla");
+        Nodo nodo13 = new Nodo(382, 120, "Santa Marta");
+        Nodo nodo14 = new Nodo(464, 186, "Valledupar");
+        Nodo nodo15 = new Nodo(409, 230, "Bosconia");
+        Nodo nodo16 = new Nodo(491, 95, "Riohacha");
+        Nodo nodo17 = new Nodo(189, 780, "Cali");
+        Nodo nodo18 = new Nodo(433, 722, "Villavicencio");
+        Nodo nodo19 = new Nodo(292, 825, "Neiva");
 
         grafo.agregarNodo(nodo0);
         grafo.agregarNodo(nodo1);
@@ -153,7 +152,9 @@ public class Controlador implements ActionListener {
         
         caminoSolucion = a_Asterisco.obtenerRuta(grafo, nodo_A, nodo_B);
         if(caminoSolucion != null) {
-            mapa.pintarSolucion(caminoSolucion);
+            mapa.cargarGrafo(grafo);
+            mapa.cargarSolucion(caminoSolucion);
+            mapa.pintar();
             mapa.setVisible(true);
         } else {
             buscar(grafo, nodo_B, nodo_A);
@@ -163,17 +164,17 @@ public class Controlador implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == selector.btnIniciar) {
-            int indice_nodo1 = selector.cbMunicipio1.getSelectedIndex();
-            int indice_nodo2 = selector.cbMunicipio2.getSelectedIndex();
+            int indiceNodo1 = selector.cbMunicipio1.getSelectedIndex();
+            int indiceNodo2 = selector.cbMunicipio2.getSelectedIndex();
 
-            if(indice_nodo1 == indice_nodo2) { JOptionPane.showMessageDialog(null, "Verifique el municipio o ciudad al que se quiere dirigir."); }
+            if(indiceNodo1 == indiceNodo2) { JOptionPane.showMessageDialog(null, "Verifique el municipio o ciudad al que se quiere dirigir."); }
             else{
                 selector.dispose();
                 try {
                     buscar(
                         grafo,
-                        grafo.getNodos().get(indice_nodo1),
-                        grafo.getNodos().get(indice_nodo2)
+                        grafo.getNodos().get(indiceNodo1),
+                        grafo.getNodos().get(indiceNodo2)
                     );
                 } catch (IOException ex) {
                     Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);

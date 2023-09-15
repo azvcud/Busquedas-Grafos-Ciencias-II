@@ -3,17 +3,14 @@ package modelo;
 public class Nodo {
 	protected int x;
 	protected int y;
-	protected int id;
+	private int id = 0;
 	protected String nombre;
-	protected int distanciaManhattan;
-	static int Cont = 0;
 
-	public Nodo(int x, int y, String nombre, int distanciaManhattan) {
+	public Nodo(int x, int y, String nombre) {
 		this.x = x;
 		this.y = y;
 		this.nombre = nombre;
-		this.distanciaManhattan = distanciaManhattan;
-		this.id = Nodo.Cont++;
+		this.id = id++;
 	}
 
 	public int getX() {
@@ -39,21 +36,8 @@ public class Nodo {
 	public String getNombre() {
 		return nombre;
 	}
-
-	public int getDistanciaManhattan() {
-		return distanciaManhattan;
-	}
-
-	@Override
-	public String toString() {
-		return "Nodo:" + this.id + "(" + this.x + "," + this.y + ")" + ", " + this.nombre + ", "
-				+ this.distanciaManhattan;
-	}
-
-	/*
-	 * public NodePanel getNodePanel(){
-	 * return new NodePanel(this);
-	 * }
-	 */
-
+        
+        public void setNombre(String nombre) {
+            this.nombre = nombre;
+        }
 }
