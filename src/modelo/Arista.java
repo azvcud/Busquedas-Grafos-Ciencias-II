@@ -5,14 +5,14 @@ public class Arista {
 	protected Nodo nodoi;
 	protected Nodo nodof;
 	protected int distancia;
-	protected int id;
-	private static int Cont = 0;
+	private int id;
+        static int contador = 0;
 
 	public Arista(Nodo nodoi, Nodo nodof, int distancia) {
 		this.nodoi = nodoi;
 		this.nodof = nodof;
 		this.distancia = distancia;
-		this.id = Arista.Cont++;
+		this.id = Arista.contador++;
 	}
 
 	public int getId() {
@@ -30,10 +30,9 @@ public class Arista {
 	public int getDistancia() {
 		return distancia;
 	}
-
-	@Override
-	public String toString() {
-		return "Arista: " + this.id + " " + distancia + " [" + this.nodoi.toString() + "-" + this.nodof.toString()
-				+ "]";
-	}
+        
+        @Override
+        public String toString() {
+            return "Nodo Inicial: " + nodoi.getNombre() + "| Nodo final: " + nodof.getNombre() + "| Distancia: " + distancia;
+        }
 }

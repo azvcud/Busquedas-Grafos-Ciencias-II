@@ -1,6 +1,7 @@
 package control;
 
 import control.busqueda.Busqueda;
+import control.busqueda.BusquedaA;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -31,26 +32,26 @@ public class Controlador implements ActionListener {
     }
 
     public void iniciar() throws IOException {
-        Nodo nodo0 = new Nodo(0, 0, "Bogotá", 0);
-        Nodo nodo1 = new Nodo(1, 1, "Tunja", 123);
-        Nodo nodo2 = new Nodo(2, 2, "Manizales", 164);
-        Nodo nodo3 = new Nodo(3, 3, "Medellin", 242);
-        Nodo nodo4 = new Nodo(4, 4, "Barrancabermeja", 264);
-        Nodo nodo5 = new Nodo(5, 5, "Bucaramanga", 292);
-        Nodo nodo6 = new Nodo(6, 6, "Cúcuta", 399);
-        Nodo nodo7 = new Nodo(7, 7, "Ibague", 132);
-        Nodo nodo8 = new Nodo(8, 8, "Pereira", 180);
-        Nodo nodo9 = new Nodo(9, 9, "Montería", 490);
-        Nodo nodo10 = new Nodo(10, 10, "Sincelejo", 532);
-        Nodo nodo11 = new Nodo(11, 11, "Cartagena", 642);
-        Nodo nodo12 = new Nodo(12, 12, "Barranquilla", 696);
-        Nodo nodo13 = new Nodo(13, 13, "Santa Marta", 723);
-        Nodo nodo14 = new Nodo(14, 14, "Valledupar", 643);
-        Nodo nodo15 = new Nodo(15, 15, "Bosconia", 577);
-        Nodo nodo16 = new Nodo(16, 16, "Riohacha", 763);
-        Nodo nodo17 = new Nodo(17, 17, "Cali", 306);
-        Nodo nodo18 = new Nodo(18, 18, "Villavicencio", 78);
-        Nodo nodo19 = new Nodo(19, 19, "Neiva", 241);
+        Nodo nodo0 = new Nodo(394, 673, "Bogotá", 0);
+        Nodo nodo1 = new Nodo(454, 604, "Tunja", 123);
+        Nodo nodo2 = new Nodo(275, 645, "Manizales", 164);
+        Nodo nodo3 = new Nodo(268, 544, "Medellin", 242);
+        Nodo nodo4 = new Nodo(412, 476, "Barrancabermeja", 264);
+        Nodo nodo5 = new Nodo(474, 472, "Bucaramanga", 292);
+        Nodo nodo6 = new Nodo(527, 407, "Cúcuta", 399);
+        Nodo nodo7 = new Nodo(297, 697, "Ibague", 132);
+        Nodo nodo8 = new Nodo(257, 670, "Pereira", 180);
+        Nodo nodo9 = new Nodo(243, 332, "Montería", 490);
+        Nodo nodo10 = new Nodo(284, 287, "Sincelejo", 532);
+        Nodo nodo11 = new Nodo(276, 191, "Cartagena", 642);
+        Nodo nodo12 = new Nodo(333, 141, "Barranquilla", 696);
+        Nodo nodo13 = new Nodo(382, 120, "Santa Marta", 723);
+        Nodo nodo14 = new Nodo(464, 186, "Valledupar", 643);
+        Nodo nodo15 = new Nodo(409, 230, "Bosconia", 577);
+        Nodo nodo16 = new Nodo(491, 95, "Riohacha", 763);
+        Nodo nodo17 = new Nodo(189, 780, "Cali", 306);
+        Nodo nodo18 = new Nodo(433, 722, "Villavicencio", 78);
+        Nodo nodo19 = new Nodo(292, 825, "Neiva", 241);
 
         grafo.agregarNodo(nodo0);
         grafo.agregarNodo(nodo1);
@@ -111,6 +112,7 @@ public class Controlador implements ActionListener {
         Arista arista26 = new Arista(nodo17, nodo8, 209);
         Arista arista27 = new Arista(nodo18, nodo19, 417);
         Arista arista28 = new Arista(nodo19, nodo17, 382);
+        Arista arista29 = new Arista(nodo6, nodo14, 552);
 
         grafo.agregarArista(arista0);
         grafo.agregarArista(arista1);
@@ -141,6 +143,7 @@ public class Controlador implements ActionListener {
         grafo.agregarArista(arista26);
         grafo.agregarArista(arista27);
         grafo.agregarArista(arista28);
+        grafo.agregarArista(arista29);
 
         selector.setVisible(true);
     }
@@ -155,7 +158,6 @@ public class Controlador implements ActionListener {
         } else {
             buscar(grafo, nodo_B, nodo_A);
         }
-        
     }
 
     @Override
@@ -163,7 +165,7 @@ public class Controlador implements ActionListener {
         if(e.getSource() == selector.btnIniciar) {
             int indice_nodo1 = selector.cbMunicipio1.getSelectedIndex();
             int indice_nodo2 = selector.cbMunicipio2.getSelectedIndex();
-            
+
             if(indice_nodo1 == indice_nodo2) { JOptionPane.showMessageDialog(null, "Verifique el municipio o ciudad al que se quiere dirigir."); }
             else{
                 selector.dispose();

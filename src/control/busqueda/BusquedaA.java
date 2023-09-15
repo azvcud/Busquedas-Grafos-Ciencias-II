@@ -1,111 +1,100 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package control.busqueda;
 
-import control.busqueda.Busqueda;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import modelo.Arista;
 import modelo.Grafo;
 import modelo.Nodo;
-import vista.interfaz.Consola;
 
+/**
+ *
+ * @author amirz
+ */
 public class BusquedaA implements Busqueda {
-
-    long tiempoLimite;
-    private Consola consola = new Consola();
-    
-    public ArrayList<Arista> aristasInvolucradas(Grafo g, Nodo nodo) {
-        ArrayList<Arista> aristasInvolucradas = new ArrayList<>();
-        for (Arista arista : g.getAristas()) {
-            if (arista.getNodei().equals(nodo)) {
-                aristasInvolucradas.add(arista);
-            }
-            if (arista.getNodef().equals(nodo)) {
-                aristasInvolucradas.add(arista);
-            }
-        }
-        return aristasInvolucradas;
-    }
 
     @Override
     public ArrayList<Arista> obtenerRuta(Grafo g, Nodo nodoInicial, Nodo nodoDestino) {
-        consola.setVisible(true);
-        tiempoLimite = System.currentTimeMillis();
-        
+        ArrayList<Arista> aristasNodo;
         ArrayList<Arista> caminoSolucion = new ArrayList<>();
+        
         Nodo nodoActual = nodoInicial;
-        Nodo siguienteNodo = null;
         Nodo nodoAnterior = null;
-        int valorAcumulado = 0;
-
-        while (!nodoActual.equals(nodoDestino)) {
-            Arista mejorArista = null;
-            ArrayList<Arista> aristasInvolucradas = aristasInvolucradas(g, nodoActual);
-            Iterator<Arista> iterator = aristasInvolucradas.iterator();
-            while (iterator.hasNext()) {
-                Arista arista = iterator.next();
-                if (arista.getNodef().equals(nodoAnterior) || arista.getNodei().equals(nodoAnterior)) {
-                    iterator.remove();
-                }
-            }
-            iterator = aristasInvolucradas.iterator();
-
-            while (iterator.hasNext()) {
-                Arista arista = iterator.next();
-                Nodo aux, aux2;
-                mejorArista = (mejorArista == null) ? arista : mejorArista;
-                if (arista.getNodef() == nodoActual) {
-                    aux = arista.getNodei();
-                    consola.imprimir("---Nodo Aux: " + aux.toString());
-                } else {
-                    aux = arista.getNodef();
-                    consola.imprimir("---Nodo Aux: " + aux.toString());
-                }
-                if (mejorArista.getNodef() == nodoActual) {
-                    aux2 = mejorArista.getNodei();
-                    consola.imprimir("---Nodo Aux2: " + aux2.toString());
-                } else {
-                    aux2 = mejorArista.getNodef();
-                    consola.imprimir("---Nodo Aux2: " + aux2.toString());
-                }
-                consola.imprimir(
-                        " //Calculo arista: " + arista.getDistancia() + " + " + aux.getDistanciaManhattan() + " + "
-                                + valorAcumulado + " = "
-                                + (arista.getDistancia() + aux.getDistanciaManhattan() + valorAcumulado));
-                consola.imprimir(
-                        " //Calculo aristaA: " + mejorArista.getDistancia() + " + " + aux2.getDistanciaManhattan()
-                                + " + " + valorAcumulado + " = "
-                                + (mejorArista.getDistancia() + aux2.getDistanciaManhattan() + valorAcumulado));
-                if ((arista.getDistancia() + aux.getDistanciaManhattan()
-                        + valorAcumulado) <= (mejorArista.getDistancia()
-                                + aux2.getDistanciaManhattan() + valorAcumulado)) {
-                    mejorArista = arista;
-                    consola.imprimir("Posible mejor: " + mejorArista.toString());
-                } else {
-                    consola.imprimir("Se mantiene la mejor arista anterior");
-                }
-            }
-
-            caminoSolucion.add(mejorArista);
-            consola.imprimir("mejor arista: " + mejorArista.toString());
-            valorAcumulado += mejorArista.getDistancia();
-            consola.imprimir("Valor acumulado: " + valorAcumulado);
-            if (mejorArista.getNodef().equals(nodoActual)) {
-                siguienteNodo = mejorArista.getNodei();
-            } else {
-                siguienteNodo = mejorArista.getNodef();
-            }
-            consola.imprimir("---------------------------");
-            nodoAnterior = nodoActual;
-            nodoActual = siguienteNodo;
-            consola.imprimir("nodo anterior: " + nodoAnterior.toString());
-            consola.imprimir("nodo actual: " + nodoActual.toString());
+        Nodo nodoProximo;
+        Arista aristaCandidata;
+        
+        int funcionCosto = 0;
+        int costoAcumulado = 0;
+        int auxCosto = 0;
+        boolean remover = false;
+        
+        while(nodoActual != nodoDestino) {            
+            aristasNodo = g.getTabla().get(nodoActual);
             
-            if(System.currentTimeMillis() - tiempoLimite > 500) {
-                return null;
+            for(int i = 0; i < aristasNodo.size(); i++) {
+                aristaCandidata = aristasNodo.get(i);
+                
+                //Verifica cuál nodo es el proximo de la arista
+                if(aristaCandidata.getNodef() == nodoActual) {
+                    nodoProximo = aristaCandidata.getNodei();
+                } else {
+                    nodoProximo = aristaCandidata.getNodef();
+                }
+                
+                //Vecindades
+                if(nodoProximo != nodoDestino) {
+                    auxCosto =
+                        aristaCandidata.getDistancia() +
+                        distanciaEuclideana(nodoProximo, nodoDestino)
+                    ;
+                } else {
+                    costoAcumulado = costoAcumulado + aristaCandidata.getDistancia();
+                    if(remover) { caminoSolucion.remove(caminoSolucion.size() - 1); }
+                    caminoSolucion.add(aristaCandidata);
+                    return caminoSolucion;
+                }
+                
+                //Apilamiento de aristas solución
+                if(auxCosto < funcionCosto || funcionCosto == 0) { 
+                    if(nodoAnterior != nodoProximo) { 
+                        funcionCosto = auxCosto;
+                        if(remover) { caminoSolucion.remove(caminoSolucion.size() - 1); }
+                        caminoSolucion.add(aristaCandidata);
+                        remover = true;
+                    }
+                }
             }
+            
+            nodoAnterior = nodoActual;
+            if(nodoAnterior == caminoSolucion.get(caminoSolucion.size() - 1).getNodef()) {
+                nodoActual = caminoSolucion.get(caminoSolucion.size() - 1).getNodei();
+            } else {
+                nodoActual = caminoSolucion.get(caminoSolucion.size() - 1).getNodef();
+            }
+            
+            if(nodoActual == nodoInicial) { return null; }
+            
+            costoAcumulado = costoAcumulado + funcionCosto;
+            funcionCosto = 0;
+            remover = false;
         }
+        
         return caminoSolucion;
     }
-
+    
+    private int distanciaEuclideana(Nodo nodo1, Nodo nodo2) {
+        int x1 = nodo1.getX();
+        int y1 = nodo1.getY();
+        int x2 = nodo2.getX();
+        int y2 = nodo2.getY();
+        
+        int potenciaX = (x2-x1) * (x2-x1);
+        int potenciaY = (y2-y1) * (y2-y1);
+        
+        int distanciaManhattan = (int) Math.sqrt(potenciaX + potenciaY);
+        
+        return distanciaManhattan;
+    }
 }

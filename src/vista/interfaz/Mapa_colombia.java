@@ -9,9 +9,6 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
@@ -28,9 +25,9 @@ public class Mapa_colombia extends JFrame{
     
     private ArrayList<Arista> caminoSolucion;
     
-    private static int RADIO_NODO = 20;
-    private static int AJUSTE_X = 11;
-    private static int AJUSTE_Y = 12;
+    private static final int RADIO_NODO = 20;
+    private static final int AJUSTE_X = 11;
+    private static final int AJUSTE_Y = 12;
             
     private static final int[][] coordenadas = {
         {394, 673}, //0 Bogotá
@@ -85,12 +82,13 @@ public class Mapa_colombia extends JFrame{
         new Line2D.Double(189+AJUSTE_X, 780+AJUSTE_Y, 257+AJUSTE_X, 670+AJUSTE_Y),
         new Line2D.Double(433+AJUSTE_X, 722+AJUSTE_Y, 292+AJUSTE_X, 825+AJUSTE_Y),
         new Line2D.Double(292+AJUSTE_X, 825+AJUSTE_Y, 189+AJUSTE_X, 780+AJUSTE_Y),
+        new Line2D.Double(527+AJUSTE_X, 407+AJUSTE_Y, 464+AJUSTE_X, 186+AJUSTE_Y) //
     };
     
     private boolean[] tipoLinea;
     
     public Mapa_colombia() throws IOException {
-        tipoLinea = new boolean[29];
+        tipoLinea = new boolean[30];
         
         setTitle("Mapa de Colombia");
         setSize(626, 980);

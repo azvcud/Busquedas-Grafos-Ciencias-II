@@ -19,11 +19,7 @@ Proyecto Curricular de Ingeniería de Sistemas
 
 Este repositorio contiene el código fuente del segundo reto en la asignatura de Ciencias de la Computación II, enfocado en el tema de la búsqueda en grafos. El objetivo principal es aplicar tres algoritmos de búsqueda a un grafo representativo de ciudades de Colombia. Dichos algoritmos son:
 
-1. **Algoritmo de Dijkstra**
-
-2. **Algoritmo de Kruskal**
-
-3. **Algoritmo A***
+1. **Algoritmo A***
 
 
 ---
