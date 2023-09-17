@@ -13,7 +13,7 @@ import modelo.Nodo;
  *
  * @author amirz
  */
-public class BusquedaA implements Busqueda {
+public class AlgoritmoA implements Busqueda {
 
     @Override
     public ArrayList<Arista> obtenerRuta(Grafo g, Nodo nodoInicial, Nodo nodoDestino) {

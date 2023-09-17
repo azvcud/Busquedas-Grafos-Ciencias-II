@@ -85,7 +85,7 @@ public class Mapa_colombia extends JFrame{
                         Color.BLUE, 
                         grafo2D.getNodos().get(i).getX() + RADIO_NODO, 
                         grafo2D.getNodos().get(i).getY() + RADIO_NODO, 
-                         Color.BLACK
+                        Color.BLACK
                     );
                     g2D.setPaint(grafoGradiente);
                     g2D.fill(new Ellipse2D.Double(

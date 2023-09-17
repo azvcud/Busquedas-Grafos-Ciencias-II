@@ -156,9 +156,9 @@ public class Controlador implements ActionListener {
             mapa.cargarSolucion(caminoSolucion);
             mapa.pintar();
             mapa.setVisible(true);
-        } else {
+        } /*else {
             buscar(grafo, nodo_B, nodo_A);
-        }
+        }*/
     }
 
     @Override

@@ -5,12 +5,13 @@ public class Nodo {
 	protected int y;
 	private int id = 0;
 	protected String nombre;
+        private static int contador = 0; 
 
 	public Nodo(int x, int y, String nombre) {
 		this.x = x;
 		this.y = y;
 		this.nombre = nombre;
-		this.id = id++;
+		this.id = Nodo.contador++;
 	}
 
 	public int getX() {
