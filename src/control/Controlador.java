@@ -1,5 +1,7 @@
 package control;
 
+import control.busqueda.AlgoritmoA;
+import control.busqueda.AlgoritmoDijkstra;
 import control.busqueda.Busqueda;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +18,12 @@ import vista.interfaz.Mapa_colombia;
 import vista.interfaz.SelectorMunicipio;
 
 public class Controlador implements ActionListener {
-    private final Busqueda a_Asterisco;
+    private Busqueda busqueda;
     private final Grafo grafo;
     private final Mapa_colombia mapa;
     private final SelectorMunicipio selector;
 
-    public Controlador(Busqueda a_Asterisco, Grafo grafo, Mapa_colombia mapa, SelectorMunicipio selector) {
-        this.a_Asterisco = a_Asterisco;
+    public Controlador(Grafo grafo, Mapa_colombia mapa, SelectorMunicipio selector) {
         this.grafo = grafo;
         this.mapa = mapa;
         this.selector = selector;
@@ -150,7 +151,7 @@ public class Controlador implements ActionListener {
     private void buscar(Grafo grafo, Nodo nodo_A, Nodo nodo_B) throws IOException {
         ArrayList<Arista> caminoSolucion;
         
-        caminoSolucion = a_Asterisco.obtenerRuta(grafo, nodo_A, nodo_B);
+        caminoSolucion = busqueda.obtenerRuta(grafo, nodo_A, nodo_B);
         if(caminoSolucion != null) {
             mapa.cargarGrafo(grafo);
             mapa.cargarSolucion(caminoSolucion);
@@ -166,8 +167,13 @@ public class Controlador implements ActionListener {
         if(e.getSource() == selector.btnIniciar) {
             int indiceNodo1 = selector.cbMunicipio1.getSelectedIndex();
             int indiceNodo2 = selector.cbMunicipio2.getSelectedIndex();
+            String algoritmoSeleccionado = (String) selector.cbAlgoritmo.getSelectedItem();
+            
+            if("A*".equals(algoritmoSeleccionado)) { setBusqueda(new AlgoritmoA()); }
+            else if("Dijkstra".equals(algoritmoSeleccionado)) { setBusqueda(new AlgoritmoDijkstra());}
 
-            if(indiceNodo1 == indiceNodo2) { JOptionPane.showMessageDialog(null, "Verifique el municipio o ciudad al que se quiere dirigir."); }
+            if(indiceNodo1 == indiceNodo2 || algoritmoSeleccionado.equals("")) 
+            { JOptionPane.showMessageDialog(null, "Verifique la información ingresada."); }
             else{
                 selector.dispose();
                 try {
@@ -179,7 +185,12 @@ public class Controlador implements ActionListener {
                 } catch (IOException ex) {
                     Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                
             }
         }
+    }
+
+    public void setBusqueda(Busqueda busqueda) {
+        this.busqueda = busqueda;
     }
 }

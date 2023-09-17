@@ -76,7 +76,7 @@ public class AlgoritmoDijkstra implements Busqueda {
             arbolSolucion.add(
                 aristasCandidatas.get(g.getNodos().get(posicion))
             );
-            
+
             minimoAnterior = minimo;
             continuaCamino.clear();
             pasoDijkstra.replace(g.getNodos().get(posicion), null);
