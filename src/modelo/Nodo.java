@@ -4,14 +4,32 @@ public class Nodo {
 	protected int x;
 	protected int y;
 	private int id = 0;
-	protected String nombre;
-        private static int contador = 0; 
+	protected boolean Borde;
+	protected float tiempoProcesamiento;
+	private static int contador = 0;
 
-	public Nodo(int x, int y, String nombre) {
+	public Nodo(int x, int y, boolean Borde, float tiempoProcesamiento) {
 		this.x = x;
 		this.y = y;
-		this.nombre = nombre;
 		this.id = Nodo.contador++;
+		this.Borde = Borde;
+		this.tiempoProcesamiento = tiempoProcesamiento;
+	}
+
+	public boolean isBorde() {
+		return Borde;
+	}
+
+	public void setBorde(boolean borde) {
+		Borde = borde;
+	}
+
+	public float getTiempoProcesamiento() {
+		return tiempoProcesamiento;
+	}
+
+	public void setTiempoProcesamiento(int tiempoProcesamiento) {
+		this.tiempoProcesamiento = tiempoProcesamiento;
 	}
 
 	public int getX() {
@@ -34,11 +52,14 @@ public class Nodo {
 		return id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	@Override
+	public java.lang.String toString() {
+		return "Nodo{" +
+				"x=" + x +
+				", y=" + y +
+				", id=" + id +
+				", Borde=" + Borde +
+				", tiempoProcesamiento=" + tiempoProcesamiento +
+				'}';
 	}
-        
-        public void setNombre(String nombre) {
-            this.nombre = nombre;
-        }
 }

@@ -2,17 +2,22 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class Grafo {
 
 	protected HashMap<Nodo, ArrayList<Arista>> tabla;
 	protected ArrayList<Arista> aristas;
 	protected ArrayList<Nodo> nodos;
+	private int numeroNodos = 20;
+	private int numeroAristasInternas = 30;
+	private int numeroAristasExternas = 20;
 
 	public Grafo() {
-            this.tabla = new HashMap<>();
-            this.aristas = new ArrayList<>();
-            this.nodos = new ArrayList<>();
+		this.tabla = new HashMap<>();
+		this.aristas = new ArrayList<>();
+		this.nodos = new ArrayList<>();
 	}
 
 	public void agregarNodo(Nodo nodo) {
@@ -31,6 +36,71 @@ public class Grafo {
 			return true;
 		} else
 			return false;
+	}
+
+	public void generarNodos() {
+		for (int i = 0; i < numeroNodos; i++) {
+			Boolean borde;
+			float tiempoProcesamiento;
+			Random random = new Random();
+			borde = (random.nextInt(2) == 1) ? true : false;
+			tiempoProcesamiento = borde ? (float) random.nextInt(151) + 50 : (float) (random.nextInt(91) + 10) / 4;
+			Nodo nodo = new Nodo(i * 5, i * 5, borde, tiempoProcesamiento);
+			this.agregarNodo(nodo);
+			System.out.println(nodo.toString());
+		}
+	}
+
+	public void generarAristas() {
+		Random random = new Random();
+		List<Arista> aristasInternasGeneradas = new ArrayList<>();
+		List<Arista> aristasExternasGeneradas = new ArrayList<>();
+		ArrayList<Nodo> nodosBorde = new ArrayList<>();
+		ArrayList<Nodo> nodosInternos = new ArrayList<>();
+		for (int i = 0; i < numeroNodos; i++) {
+			if (nodos.get(i).Borde) {
+				nodosBorde.add(nodos.get(i));
+			} else {
+				nodosInternos.add(nodos.get(i));
+			}
+		}
+		System.out.println("oi! " + nodosInternos.size());
+		if (numeroAristasInternas > (nodosBorde.size() * (nodosBorde.size() - 1)) / 2) {
+			throw new IllegalArgumentException("Número de aristas demasiado grande");
+		}
+		while (aristasInternasGeneradas.size() < numeroAristasInternas) {
+			int indiceNodoInicial = random.nextInt(nodosBorde.size());
+			int indiceNodoFinal = random.nextInt(nodosBorde.size());
+			int anchoBanda = random.nextInt(200) + 101;
+			float probabilidadCaida = random.nextFloat() * 0.5f;
+			if (indiceNodoInicial != indiceNodoFinal) {
+				Nodo nodoInicial = nodosBorde.get(indiceNodoInicial);
+				Nodo nodoFinal = nodosBorde.get(indiceNodoFinal);
+				Arista nuevaArista = new Arista(nodoInicial, nodoFinal, 0, anchoBanda, probabilidadCaida);
+				System.out.println(nuevaArista.toString());
+				if (!aristasInternasGeneradas.contains(nuevaArista)) {
+					aristasInternasGeneradas.add(nuevaArista);
+				}
+			}
+		}
+
+		if (numeroAristasExternas > nodosBorde.size() * nodosInternos.size()) {
+			throw new IllegalArgumentException("Número de aristas demasiado grande");
+		}
+
+		while (aristasExternasGeneradas.size() < numeroAristasExternas) {
+			int indiceNodoBorde = random.nextInt(nodosBorde.size());
+			int indiceNodoInterno = random.nextInt(nodosInternos.size());
+			int anchoBanda = random.nextInt(100) + 1;
+			float probabilidadCaida = random.nextFloat();
+			Nodo nodoBorde = nodosBorde.get(indiceNodoBorde);
+			Nodo nodoInterno = nodosInternos.get(indiceNodoInterno);
+
+			Arista nuevaArista = new Arista(nodoBorde, nodoInterno, 0, anchoBanda, probabilidadCaida);
+			if (!aristasExternasGeneradas.contains(nuevaArista)) {
+				aristasExternasGeneradas.add(nuevaArista);
+			}
+		}
 	}
 
 	public ArrayList<Arista> getAristas() {
