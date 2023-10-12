@@ -93,8 +93,8 @@ public class AlgoritmoA implements Busqueda {
         int potenciaX = (x2-x1) * (x2-x1);
         int potenciaY = (y2-y1) * (y2-y1);
         
-        int distanciaManhattan = (int) Math.sqrt(potenciaX + potenciaY);
+        int distanciaEuclideana = (int) Math.sqrt(potenciaX + potenciaY);
         
-        return distanciaManhattan;
+        return distanciaEuclideana;
     }
 }
