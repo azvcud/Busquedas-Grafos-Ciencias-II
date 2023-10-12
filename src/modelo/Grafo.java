@@ -9,6 +9,8 @@ public class Grafo {
 
 	protected HashMap<Nodo, ArrayList<Arista>> tabla;
 	protected ArrayList<Arista> aristas;
+	private List<Arista> aristasInternasGeneradas = new ArrayList<>();
+	private List<Arista> aristasExternasGeneradas = new ArrayList<>();
 	protected ArrayList<Nodo> nodos;
 	private int numeroNodos = 20;
 	private int numeroAristasInternas = 30;
@@ -53,8 +55,6 @@ public class Grafo {
 
 	public void generarAristas() {
 		Random random = new Random();
-		List<Arista> aristasInternasGeneradas = new ArrayList<>();
-		List<Arista> aristasExternasGeneradas = new ArrayList<>();
 		ArrayList<Nodo> nodosBorde = new ArrayList<>();
 		ArrayList<Nodo> nodosInternos = new ArrayList<>();
 		for (int i = 0; i < numeroNodos; i++) {
@@ -71,12 +71,12 @@ public class Grafo {
 		while (aristasInternasGeneradas.size() < numeroAristasInternas) {
 			int indiceNodoInicial = random.nextInt(nodosBorde.size());
 			int indiceNodoFinal = random.nextInt(nodosBorde.size());
-			int anchoBanda = random.nextInt(200) + 101;
-			float probabilidadCaida = random.nextFloat() * 0.5f;
+			int ping = random.nextInt(30);
+			boolean estaCaido = random.nextFloat() * 0.5f > 0.7 ? true : false;
 			if (indiceNodoInicial != indiceNodoFinal) {
 				Nodo nodoInicial = nodosBorde.get(indiceNodoInicial);
 				Nodo nodoFinal = nodosBorde.get(indiceNodoFinal);
-				Arista nuevaArista = new Arista(nodoInicial, nodoFinal, 0, anchoBanda, probabilidadCaida);
+				Arista nuevaArista = new Arista(nodoInicial, nodoFinal, ping, estaCaido);
 				System.out.println(nuevaArista.toString());
 				if (!aristasInternasGeneradas.contains(nuevaArista)) {
 					aristasInternasGeneradas.add(nuevaArista);
@@ -91,15 +91,31 @@ public class Grafo {
 		while (aristasExternasGeneradas.size() < numeroAristasExternas) {
 			int indiceNodoBorde = random.nextInt(nodosBorde.size());
 			int indiceNodoInterno = random.nextInt(nodosInternos.size());
-			int anchoBanda = random.nextInt(100) + 1;
-			float probabilidadCaida = random.nextFloat();
+			int ping = random.nextInt(251) + 50;
+			boolean estaCaido = random.nextFloat() > 0.7 ? true : false;
 			Nodo nodoBorde = nodosBorde.get(indiceNodoBorde);
 			Nodo nodoInterno = nodosInternos.get(indiceNodoInterno);
 
-			Arista nuevaArista = new Arista(nodoBorde, nodoInterno, 0, anchoBanda, probabilidadCaida);
+			Arista nuevaArista = new Arista(nodoBorde, nodoInterno, ping, estaCaido);
 			if (!aristasExternasGeneradas.contains(nuevaArista)) {
 				aristasExternasGeneradas.add(nuevaArista);
 			}
+		}
+	}
+
+	public void regenerarValores() {
+		Random random = new Random();
+		for (int i = 0; i < aristasInternasGeneradas.size(); i++) {
+			int ping = random.nextInt(30);
+			boolean estaCaido = random.nextFloat() * 0.5f > 0.8 ? true : false;
+			aristasInternasGeneradas.get(i).setEstaCaido(estaCaido);
+			aristasInternasGeneradas.get(i).setPing(ping);
+		}
+		for (int i = 0; i < aristasExternasGeneradas.size(); i++) {
+			int ping = random.nextInt(251) + 50;
+			boolean estaCaido = random.nextFloat() > 0.8 ? true : false;
+			aristasExternasGeneradas.get(i).setEstaCaido(estaCaido);
+			aristasExternasGeneradas.get(i).setPing(ping);
 		}
 	}
 
