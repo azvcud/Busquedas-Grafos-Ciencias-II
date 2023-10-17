@@ -2,6 +2,8 @@ package control;
 
 import control.busqueda.AlgoritmoA;
 import control.busqueda.AlgoritmoDijkstra;
+import control.busqueda.AlgoritmoKruskal;
+import control.busqueda.AlgoritmoPrim;
 import control.busqueda.Busqueda;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +29,7 @@ public class Controlador implements ActionListener {
         this.grafo = grafo;
         this.mapa = mapa;
         this.selector = selector;
-        
+
         selector.btnIniciar.addActionListener(this);
     }
 
@@ -73,10 +75,10 @@ public class Controlador implements ActionListener {
         grafo.agregarNodo(nodo17);
         grafo.agregarNodo(nodo18);
         grafo.agregarNodo(nodo19);
-        
+
         DefaultComboBoxModel<String> modelo1 = new DefaultComboBoxModel<>();
         DefaultComboBoxModel<String> modelo2 = new DefaultComboBoxModel<>();
-        for(int i = 0; i < grafo.getNodos().size(); i++) {
+        for (int i = 0; i < grafo.getNodos().size(); i++) {
             modelo1.addElement(grafo.getNodos().get(i).getNombre());
             modelo2.addElement(grafo.getNodos().get(i).getNombre());
         }
@@ -147,45 +149,53 @@ public class Controlador implements ActionListener {
 
         selector.setVisible(true);
     }
-    
+
     private void buscar(Grafo grafo, Nodo nodo_A, Nodo nodo_B) throws IOException {
         ArrayList<Arista> caminoSolucion;
-        
+
         caminoSolucion = busqueda.obtenerRuta(grafo, nodo_A, nodo_B);
-        if(caminoSolucion != null) {
+        if (caminoSolucion != null) {
             mapa.cargarGrafo(grafo);
             mapa.cargarSolucion(caminoSolucion);
             mapa.pintar();
             mapa.setVisible(true);
-        } /*else {
-            buscar(grafo, nodo_B, nodo_A);
-        }*/
+        } /*
+           * else {
+           * buscar(grafo, nodo_B, nodo_A);
+           * }
+           */
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == selector.btnIniciar) {
+        if (e.getSource() == selector.btnIniciar) {
             int indiceNodo1 = selector.cbMunicipio1.getSelectedIndex();
             int indiceNodo2 = selector.cbMunicipio2.getSelectedIndex();
             String algoritmoSeleccionado = (String) selector.cbAlgoritmo.getSelectedItem();
-            
-            if("A*".equals(algoritmoSeleccionado)) { setBusqueda(new AlgoritmoA()); }
-            else if("Dijkstra".equals(algoritmoSeleccionado)) { setBusqueda(new AlgoritmoDijkstra());}
 
-            if(indiceNodo1 == indiceNodo2 || algoritmoSeleccionado.equals("")) 
-            { JOptionPane.showMessageDialog(null, "Verifique la información ingresada."); }
-            else{
+            if ("A*".equals(algoritmoSeleccionado)) {
+                setBusqueda(new AlgoritmoA());
+            } else if ("Dijkstra".equals(algoritmoSeleccionado)) {
+                setBusqueda(new AlgoritmoDijkstra());
+            } else if ("Kruskal".equals(algoritmoSeleccionado)) {
+                setBusqueda(new AlgoritmoKruskal());
+            } else if ("Prim".equals(algoritmoSeleccionado)) {
+                setBusqueda(new AlgoritmoPrim());
+            }
+
+            if (indiceNodo1 == indiceNodo2 || algoritmoSeleccionado.equals("")) {
+                JOptionPane.showMessageDialog(null, "Verifique la información ingresada.");
+            } else {
                 selector.dispose();
                 try {
                     buscar(
-                        grafo,
-                        grafo.getNodos().get(indiceNodo1),
-                        grafo.getNodos().get(indiceNodo2)
-                    );
+                            grafo,
+                            grafo.getNodos().get(indiceNodo1),
+                            grafo.getNodos().get(indiceNodo2));
                 } catch (IOException ex) {
                     Logger.getLogger(Controlador.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                
+
             }
         }
     }
